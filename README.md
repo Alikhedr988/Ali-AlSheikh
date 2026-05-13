@@ -99,7 +99,7 @@ Same flow as Vercel — connect repo, deploy, attach domain.
 Section-by-section progress on the cinematic rebuild:
 
 - [x] **Homepage** — hero, interlude, 3-story scroll, contact CTA
-- [ ] **Film page** — categorized YouTube embed gallery (Showreel, Aerial, Arts & Culture, Documentary, Humanitarian, Music)
+- [x] **Film page** — featured showreel + 5 categorized sections (Aerial, Documentary, Humanitarian, Arts & Culture, Music)
 - [ ] **Photography page** — full visual essay gallery with the rest of the photo work
 - [ ] **Journalism page** — published-work timeline (Amnesty, Al Jazeera, Saferworld, News Deeply)
 - [x] **Jazz Kabeez page** — sky background, floating clouds & shapes (mouse parallax), poster gallery, 7 videos, album CTA

@@ -646,7 +646,7 @@
 <nav class="fixed-nav" id="fixedNav">
   <a href="index.html" class="brand">Ali Khedr</a>
   <ul class="menu">
-    <li><a href="index.html#film">Film</a></li>
+    <li><a href="film.html">Film</a></li>
     <li><a href="index.html#photography">Photography</a></li>
     <li><a href="index.html#journalism">Journalism</a></li>
     <li><a href="jazz-kabeez.html" class="active">Jazz Kabeez</a></li>
@@ -753,7 +753,34 @@
     <p>Seven recordings from the Jazz Kabeez sessions in Beirut. Click any card to play.</p>
   </div>
   <div class="videos-grid" id="videosGrid">
-    <!-- Cards populated by JS below for cleanliness -->
+    <div class="video-card" data-id="nw3i_e5r_CU">
+      <img src="assets/video-thumbnails/jazz-kabeez-1-nw3i_e5r_CU.jpg" alt="Jazz Kabeez Performance I" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video-card" data-id="4yh5cZsZMTw">
+      <img src="assets/video-thumbnails/jazz-kabeez-2-4yh5cZsZMTw.jpg" alt="Jazz Kabeez Performance II" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video-card" data-id="kDHkMvAN2IM">
+      <img src="assets/video-thumbnails/jazz-kabeez-3-kDHkMvAN2IM.jpg" alt="Jazz Kabeez Performance III" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video-card" data-id="MBBvqeCfydY">
+      <img src="assets/video-thumbnails/jazz-kabeez-4-MBBvqeCfydY.jpg" alt="Jazz Kabeez Performance IV" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video-card" data-id="p0HamVKY0eU">
+      <img src="assets/video-thumbnails/jazz-kabeez-5-p0HamVKY0eU.jpg" alt="Jazz Kabeez Performance V" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video-card" data-id="kbSTswR6IkE">
+      <img src="assets/video-thumbnails/jazz-kabeez-6-kbSTswR6IkE.jpg" alt="Jazz Kabeez Performance VI" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video-card" data-id="bjLMMzRjxY0">
+      <img src="assets/video-thumbnails/jazz-kabeez-7-bjLMMzRjxY0.jpg" alt="Jazz Kabeez Performance VII" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #5A7370, #1A1A1A)'; this.style.opacity='0.6';">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
   </div>
 </section>
 
@@ -884,37 +911,18 @@ gsap.from('.posters-header > *', {
   scrollTrigger: { trigger: '.posters-section', start: 'top 70%' }
 });
 
-// ─── Videos section ───────────────────────────────────
-const videos = [
-  { id: 'nw3i_e5r_CU', title: 'Performance I' },
-  { id: '4yh5cZsZMTw', title: 'Performance II' },
-  { id: 'kDHkMvAN2IM', title: 'Performance III' },
-  { id: 'MBBvqeCfydY', title: 'Performance IV' },
-  { id: 'p0HamVKY0eU', title: 'Performance V' },
-  { id: 'kbSTswR6IkE', title: 'Performance VI' },
-  { id: 'bjLMMzRjxY0', title: 'Performance VII' }
-];
-const grid = document.getElementById('videosGrid');
-videos.forEach((v) => {
-  const card = document.createElement('div');
-  card.className = 'video-card';
-  card.dataset.id = v.id;
-  card.innerHTML = `
-    <img src="assets/video-thumbnails/jazz-kabeez-${videos.indexOf(v)+1}-${v.id}.jpg" alt="${v.title}" loading="lazy">
-    <div class="play">
-      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    </div>
-  `;
+// ─── Video click-to-play handlers (cards are static HTML now) ─
+document.querySelectorAll('.video-card').forEach((card) => {
   card.addEventListener('click', () => {
     if (card.classList.contains('playing')) return;
     card.classList.add('playing');
+    const id = card.dataset.id;
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1`;
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
     iframe.allow = 'autoplay; encrypted-media';
     iframe.allowFullscreen = true;
     card.appendChild(iframe);
   });
-  grid.appendChild(card);
 });
 
 gsap.from('.videos-header > *', {
