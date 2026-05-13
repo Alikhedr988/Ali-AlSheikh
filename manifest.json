@@ -1,0 +1,368 @@
+{
+  "site": {
+    "name": "Ali Khedr — Portfolio",
+    "subject": "Ali Khedr",
+    "tagline": "Independent Syrian journalist, photographer, videographer, and musician based in Beirut",
+    "source_url": "https://ali-khedr.weebly.com/",
+    "extracted_at": "2026-05-12",
+    "extracted_by": "Claude"
+  },
+  "photos": [
+    {
+      "file": "photos/01-bio/portrait.jpg",
+      "section": "bio",
+      "intended_page": "About",
+      "caption": "Ali Khedr portrait — used as bio image on home page",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/published/img-3628.jpg",
+      "notes": "Low resolution on source (12KB) — replace with hi-res if available"
+    },
+    {
+      "file": "photos/02-indivisible/dsc05334-3.jpg",
+      "section": "indivisible",
+      "intended_page": "Photography",
+      "caption": "Indivisible — 16 Days of Activism Against Gender-Based Violence (2022). Outcomes of photographers and writers shedding light on the experiences of marginalized groups.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dsc05334-3_orig.jpg",
+      "external_link": "https://www.1morecup.org/indivisiblestories?offset=1671543529973"
+    },
+    {
+      "file": "photos/03-beirut-uprising-2019/mg-0866.jpg",
+      "section": "beirut-uprising",
+      "intended_page": "Photography",
+      "caption": "From the uprising in Beirut, October 2019",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-0866_orig.jpg"
+    },
+    {
+      "file": "photos/03-beirut-uprising-2019/img-2609.jpg",
+      "section": "beirut-uprising",
+      "intended_page": "Photography",
+      "caption": "From the uprising in Beirut, October 2019",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/img-2609_orig.jpg"
+    },
+    {
+      "file": "photos/04-osf-bekaa/dsc04831-2.jpg",
+      "section": "osf",
+      "intended_page": "Photography",
+      "caption": "A project with the Open Society Foundations (OSF)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/published/dsc04831-2.jpg"
+    },
+    {
+      "file": "photos/04-osf-bekaa/al-fares-distribution-2015.jpg",
+      "section": "osf",
+      "intended_page": "Photography",
+      "caption": "Lebanon — Bekaa Valley, 11 January 2015. Syrian Eyes volunteers at a late-night distribution during the storms in Al-Fares refugee camp.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/published/vlc22r-9qim-8a-1.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-002.jpg",
+      "section": "dop",
+      "intended_page": "Film (or Photography)",
+      "caption": "DOP & compositions — film still 002 (B-roll)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-37-10-05-still002.jpg",
+      "notes": "_orig 404'd, using display version"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-003.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 003",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-37-39-11-still003_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-004.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 004",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-39-24-23-still004_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-007.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 007",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-53-31-16-still007_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-009.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 009",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-54-16-11-still009_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-011.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 011",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-56-44-01-still011_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-012.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 012",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-59-12-11-still012.jpg",
+      "notes": "_orig 404'd, using display version"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-013.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 013",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-01-00-51-04-still013_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-015.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 015",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-01-01-05-21-still015_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-016.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 016",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-00-33-10-still016_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-017.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 017",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-01-01-05-still017_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-020.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 020",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-06-26-13-still020_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-023.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 023",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-13-43-20-still023.jpg",
+      "notes": "_orig 404'd, using display version"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-024.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 024",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-20-46-08-still024.jpg",
+      "notes": "_orig 404'd, using display version"
+    },
+    {
+      "file": "photos/05-dop-film-stills/still-026.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still 026",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/brolls-00-19-36-02-still026_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/c0046-still-002.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still C0046",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/c0046-mp4-04-55-48-17-still002_orig.jpg"
+    },
+    {
+      "file": "photos/05-dop-film-stills/c0054-still-001.jpg",
+      "section": "dop",
+      "intended_page": "Film",
+      "caption": "DOP & compositions — film still C0054. Associated story: Abo Tareq, 68-year-old Lebanese taxi driver, met in Beirut, who accompanied Ali on trips to refugee settlements in the Bekaa Valley. Quote: 'I have been through war in my country and I fled the war from Lebanon to Aleppo in Syria as a refugee during the civil war in Lebanon... So I totally understand how harsh war can be and what it means to be without a home.'",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/c0054-mp4-05-05-01-12-still001_orig.jpg"
+    },
+    {
+      "file": "photos/06-art-culture-beirut/img-0090.jpg",
+      "section": "art-culture",
+      "intended_page": "Photography",
+      "caption": "Beirut from a concrete point of view",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/img-0090_orig.jpg"
+    },
+    {
+      "file": "photos/07-seenaryo-discovery-theatre/mg-7498-discovery-journey.jpg",
+      "section": "seenaryo",
+      "intended_page": "Photography",
+      "caption": "A Discovery Journey — an audio recording showcasing details of nature we miss in our busy daily lives. Heartbeat aims to highlight the joy of spending time in nature and listening to it.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-7498_orig.jpg"
+    },
+    {
+      "file": "photos/07-seenaryo-discovery-theatre/mg-0645-youth-theatre.jpg",
+      "section": "seenaryo",
+      "intended_page": "Photography",
+      "caption": "Youth & Children's Theatre — Bekaa Valley. Seenaryo's program gives Syrian refugees a platform to find their voice. Each term, participants devise and perform an original show.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-0645_orig.jpg"
+    },
+    {
+      "file": "photos/07-seenaryo-discovery-theatre/mg-8996.jpg",
+      "section": "seenaryo",
+      "intended_page": "Photography",
+      "caption": "Seenaryo Youth Theatre — Bekaa Valley",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-8996_orig.jpg"
+    },
+    {
+      "file": "photos/07-seenaryo-discovery-theatre/dsc05130-3.jpg",
+      "section": "seenaryo",
+      "intended_page": "Photography",
+      "caption": "Seenaryo Youth Theatre — Bekaa Valley",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dsc05130-3_orig.jpg"
+    },
+    {
+      "file": "photos/07-seenaryo-discovery-theatre/dsc05084-2-brass-polishing.jpg",
+      "section": "seenaryo",
+      "intended_page": "Photography",
+      "caption": "Brass trumpet polishing at Al-Fares refugee camp, Bekaa Valley — most male residents of Al-Fares used to work in brass polishing back in Syria.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dsc05084-2_orig.jpg",
+      "notes": "MISSING — 404 on source server, both _orig and thumbnail. Replace from local archive if available."
+    },
+    {
+      "file": "photos/08-music/img-3641-portrait.jpg",
+      "section": "music",
+      "intended_page": "Film (music subsection) or About",
+      "caption": "Music page portrait",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/img-3641_orig.jpg"
+    },
+    {
+      "file": "photos/09-jazz-kabeez/dar-0081-jazz-day-2019.jpg",
+      "section": "jazz-kabeez",
+      "intended_page": "Jazz Kabeez",
+      "caption": "International Jazz Day 2019",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dar-0081_orig.jpg"
+    },
+    {
+      "file": "designs/jazz-kabeez-posters/john-coltrane.jpg",
+      "section": "jazz-posters",
+      "intended_page": "Jazz Kabeez",
+      "caption": "John Coltrane — Jazz Kabeez poster design (Arabic typography treatment)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/john-coltrane-draft2_orig.jpg"
+    },
+    {
+      "file": "designs/jazz-kabeez-posters/chick-corea.jpg",
+      "section": "jazz-posters",
+      "intended_page": "Jazz Kabeez",
+      "caption": "Chick Corea — Jazz Kabeez poster design",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/chick-corea_orig.jpg"
+    },
+    {
+      "file": "designs/jazz-kabeez-posters/miles-davis.jpg",
+      "section": "jazz-posters",
+      "intended_page": "Jazz Kabeez",
+      "caption": "Miles Davis — Jazz Kabeez poster design (Arabic typography)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/miles-davis-arabic-2-temp_orig.jpg"
+    },
+    {
+      "file": "designs/jazz-kabeez-posters/ellis-marsalis.jpg",
+      "section": "jazz-posters",
+      "intended_page": "Jazz Kabeez",
+      "caption": "Ellis Marsalis — Jazz Kabeez poster design (Arabic typography)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/ellies-marsalis-arabic_orig.jpg"
+    },
+    {
+      "file": "designs/jazz-kabeez-posters/nina-simone.jpg",
+      "section": "jazz-posters",
+      "intended_page": "Jazz Kabeez",
+      "caption": "Nina Simone — Jazz Kabeez poster design (Arabic typography)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/nina-simone-ar_orig.jpg"
+    },
+    {
+      "file": "photos/10-journalism/img-9852-amnesty.jpg",
+      "section": "journalism",
+      "intended_page": "Journalism",
+      "caption": "Cover image — Through Syrian Eyes: Daily Life for Refugees in Lebanon (Amnesty International, 2016)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/editor/img-9852.jpg",
+      "external_link": "https://www.amnesty.org/en/latest/campaigns/2016/03/syrian-refugees-bekaa-valley-lebanon/"
+    },
+    {
+      "file": "photos/10-journalism/mg-4200-news-deeply.jpg",
+      "section": "journalism",
+      "intended_page": "Journalism",
+      "caption": "Cover image — Dangerous Exit: Who Controls How Syrians in Lebanon Go Home (News Deeply, by Charlotte Alfred, 2018)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-4200_orig.jpg",
+      "external_link": "https://www.newsdeeply.com/refugees/articles/2018/08/08/dangerous-exit-who-controls-how-syrians-in-lebanon-go-home"
+    },
+    {
+      "file": "photos/10-journalism/dsc01482-2-port-blast-aid.jpg",
+      "section": "journalism",
+      "intended_page": "Journalism",
+      "caption": "Following the devastating blast at the port of Beirut, Lebanon faced wheat and resource shortages. The Spanish government provided aid including wheat and logistic supplies.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dsc01482-2_orig.jpg"
+    },
+    {
+      "file": "photos/10-journalism/saferworld-solidarity-exile.png",
+      "section": "journalism",
+      "intended_page": "Journalism",
+      "caption": "Cover — Solidarity and Exile in Lebanon: Syrian Refugees and Their Hosts (Saferworld). Photo-stories by Ali Alsheikh Kheder and photographer Diego Ibarra Sanchez.",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/saferworlddis014b-cropped.png",
+      "external_link": "https://www.saferworld.org.uk/en-stories-of-change/solidarity-and-exile-in-lebanon-syrian-refugees-and-their-hosts-1"
+    },
+    {
+      "file": "photos/10-journalism/saferworld-migration-responses.png",
+      "section": "journalism",
+      "intended_page": "Journalism",
+      "caption": "Cover — Stories from Lebanon: Responses to Migration (Saferworld)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/saferworlddisweb019-reduced-cropped-1424-950-485436893.png",
+      "external_link": "https://www.saferworld.org.uk/en-stories-of-change/stories-from-lebanon-responses-to-migration"
+    },
+    {
+      "file": "photos/10-journalism/aljazeera-tension-solidarity.jpg",
+      "section": "journalism",
+      "intended_page": "Journalism",
+      "caption": "Cover — Syrian Refugees: Tension & Solidarity in Exile (Al Jazeera English, 2018)",
+      "source_url": "https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/45bf04644f27422787204c0c54921b0f-8.jpg",
+      "external_link": "https://www.aljazeera.com/indepth/inpictures/syrian-refugees-tension-solidarity-exile-lebanon-180506093057204.html"
+    }
+  ],
+  "videos": [
+    { "id": "oUT55Mi2pZY", "category": "showreel", "title": "My Showreel", "from_page": "video.html" },
+    { "id": "uhGqHkKA6O8", "category": "showreel", "title": "Aerial Showreel", "from_page": "video.html" },
+    { "id": "BySavSOpWak", "category": "arts-culture", "from_page": "video.html" },
+    { "id": "_KNvVrFN_JI", "category": "arts-culture", "from_page": "video.html" },
+    { "id": "StSqx3hl7TU", "category": "arts-culture", "from_page": "video.html" },
+    { "id": "S8tkry0C3x4", "category": "documentary", "from_page": "video.html" },
+    { "id": "J26wXZ5rNNQ", "category": "humanitarian", "from_page": "video.html" },
+    { "id": "9TP7o073QPE", "category": "humanitarian", "from_page": "video.html" },
+    { "id": "nw3i_e5r_CU", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "4yh5cZsZMTw", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "kDHkMvAN2IM", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "MBBvqeCfydY", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "p0HamVKY0eU", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "kbSTswR6IkE", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "bjLMMzRjxY0", "category": "jazz-kabeez", "from_page": "jazz-kabeez.html" },
+    { "id": "a9xdCF9VWzk", "category": "music", "from_page": "music.html" }
+  ],
+  "playlists": [
+    {
+      "id": "PLq92M5mNdSTf2pKpKRWOEZllJS1c3INS9",
+      "title": "HIJAZZ HARB Album",
+      "description": "Jazz × Sufi fusion live in Beirut, 8 Nov 2015",
+      "url": "https://www.youtube.com/watch?v=upt3_VQ91Qw&list=PLq92M5mNdSTf2pKpKRWOEZllJS1c3INS9"
+    }
+  ],
+  "contact": {
+    "email": "alishkhedr@gmail.com",
+    "phone": "+961 76 955 915",
+    "location": "Beirut, Lebanon"
+  },
+  "social": {
+    "instagram": "https://instagram.com/ali_shaikh_",
+    "facebook": "https://www.facebook.com/askorn",
+    "linkedin": "https://www.linkedin.com/in/ali-alsheikh-khedr-a1b8a680/"
+  },
+  "publications": [
+    { "outlet": "Amnesty International", "year": 2016, "url": "https://www.amnesty.org/en/latest/campaigns/2016/03/syrian-refugees-bekaa-valley-lebanon/" },
+    { "outlet": "News Deeply (Refugees Deeply)", "year": 2018, "url": "https://www.newsdeeply.com/refugees/articles/2018/08/08/dangerous-exit-who-controls-how-syrians-in-lebanon-go-home" },
+    { "outlet": "Saferworld", "url": "https://www.saferworld.org.uk/en-stories-of-change/solidarity-and-exile-in-lebanon-syrian-refugees-and-their-hosts-1" },
+    { "outlet": "Saferworld", "url": "https://www.saferworld.org.uk/en-stories-of-change/stories-from-lebanon-responses-to-migration" },
+    { "outlet": "Al Jazeera English", "year": 2018, "url": "https://www.aljazeera.com/indepth/inpictures/syrian-refugees-tension-solidarity-exile-lebanon-180506093057204.html" },
+    { "outlet": "1 More Cup (Indivisible Stories)", "year": 2022, "url": "https://www.1morecup.org/indivisiblestories?offset=1671543529973" }
+  ],
+  "affiliations": [
+    "Co-founder, Syrian Eyes",
+    "Co-founder, Jazz Kabeez",
+    "HIJAZZ HARB (Jazz × Sufi fusion project, Beirut)",
+    "Collaborator: Seenaryo, Open Society Foundations"
+  ]
+}

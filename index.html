@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Khedr — Portfolio</title>
+<link rel="icon" type="image/x-icon" href="assets/site-meta/favicon.ico">
+<meta name="description" content="Ali Khedr — independent Syrian journalist, photographer, videographer and musician based in Beirut. A decade of documentary witness.">
+<meta property="og:title" content="Ali Khedr — Portfolio">
+<meta property="og:description" content="Independent Syrian journalist, photographer, videographer and musician based in Beirut.">
+<meta property="og:image" content="assets/images/osf-bekaa/al-fares-distribution-2015.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+  :root {
+    --ink: #0B0805;
+    --ink-2: #150F08;
+    --cream: #EBDEC4;
+    --cream-2: #D6C49E;
+    --clay: #C9784A;
+    --ochre: #B89466;
+    --muted: #8B7556;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    cursor: none;
+  }
+
+  body { overflow-x: hidden; }
+
+  /* ── Custom cursor ───────────────────────────────────── */
+  .cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 32px; height: 32px;
+    border: 1px solid var(--cream);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: width 0.3s cubic-bezier(0.2,0.7,0.2,1),
+                height 0.3s cubic-bezier(0.2,0.7,0.2,1),
+                background 0.3s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor.hover {
+    width: 80px; height: 80px;
+    background: var(--clay);
+    border-color: var(--clay);
+  }
+  .cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 4px; height: 4px;
+    background: var(--cream);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+  }
+  @media (max-width: 768px) {
+    html, body { cursor: auto; }
+    .cursor, .cursor-dot { display: none; }
+  }
+
+  /* ── Film grain ──────────────────────────────────────── */
+  .grain {
+    position: fixed; inset: -50%; z-index: 100;
+    pointer-events: none;
+    opacity: 0.2;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0 0.72  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 220px 220px;
+    animation: grain 7s steps(10) infinite;
+  }
+  @keyframes grain {
+    0%   { transform: translate(0,0); }
+    20%  { transform: translate(-10%, 5%); }
+    40%  { transform: translate(5%, -15%); }
+    60%  { transform: translate(15%, 10%); }
+    80%  { transform: translate(-5%, 25%); }
+    100% { transform: translate(0,0); }
+  }
+
+  /* ── Persistent nav ──────────────────────────────────── */
+  nav.fixed-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    transition: background 0.5s ease, padding 0.4s ease;
+  }
+  nav.fixed-nav.scrolled {
+    background: rgba(11, 8, 5, 0.7);
+    backdrop-filter: blur(20px);
+    padding: 1rem 3rem;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 14;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .menu {
+    display: flex; gap: 2.5rem;
+    list-style: none;
+  }
+  .menu a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 400;
+    opacity: 0.72;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .menu a:hover { opacity: 1; color: var(--clay); }
+  @media (max-width: 768px) {
+    nav.fixed-nav { padding: 1rem 1.5rem; }
+    .menu { display: none; }
+  }
+
+  /* ── 1. HERO ─────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .bg-video {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 56.25vw;
+    min-height: 100vh;
+    min-width: 177.77vh;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .bg-video iframe {
+    width: 100%; height: 100%;
+    border: 0; display: block;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 70%, rgba(20, 14, 8, 0.45) 0%, rgba(11, 8, 5, 0.85) 100%),
+      linear-gradient(135deg, rgba(60, 35, 18, 0.35) 0%, rgba(11, 8, 5, 0.6) 100%);
+    mix-blend-mode: multiply;
+  }
+  .hero-sepia {
+    position: absolute; inset: 0;
+    background: rgba(60, 32, 14, 0.35);
+    mix-blend-mode: color;
+  }
+  .hero-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(5, 3, 1, 0.92) 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 8rem 3rem 3rem;
+  }
+  .hero-text {
+    align-self: center;
+    max-width: 1100px;
+  }
+  .eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+  }
+  .eyebrow::before { content: '— '; margin-right: 0.4rem; }
+
+  h1.hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-size: clamp(3.5rem, 9.5vw, 9.5rem);
+    line-height: 0.92;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    letter-spacing: -0.035em;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--cream-2);
+    font-weight: 200;
+  }
+  .hero-tagline {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--cream-2);
+    max-width: 34em;
+    font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 24;
+  }
+  .hero-tagline strong { font-weight: 500; font-style: normal; color: var(--cream); }
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: var(--ochre);
+    font-size: 0.66rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  .scroll-cue { display: flex; align-items: center; gap: 1rem; }
+  .scroll-cue .line {
+    width: 70px; height: 1px;
+    background: rgba(235, 222, 196, 0.18);
+    position: relative; overflow: hidden;
+  }
+  .scroll-cue .line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -70px;
+    width: 70px; height: 1px;
+    background: var(--clay);
+    animation: scrollLine 2.6s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { left: -70px; } 100% { left: 70px; }
+  }
+
+  /* ── 2. INTERLUDE — typographic statement ────────────── */
+  .interlude {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 3rem;
+    text-align: center;
+    position: relative;
+    background: var(--ink);
+  }
+  .interlude-marker {
+    position: absolute;
+    top: 4rem; left: 3rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--clay);
+    font-weight: 500;
+  }
+  .interlude-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-size: clamp(2.5rem, 7vw, 6.5rem);
+    line-height: 1.05;
+    color: var(--cream);
+    max-width: 22ch;
+    letter-spacing: -0.025em;
+  }
+  .interlude-text em {
+    font-style: italic;
+    color: var(--clay);
+    font-weight: 300;
+  }
+  .interlude-text .reveal-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  .interlude-text .reveal-word span {
+    display: inline-block;
+    transform: translateY(100%);
+  }
+
+  /* ── 3. PARALLAX PHOTO STORIES ──────────────────────── */
+  .story {
+    min-height: 130vh;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 5rem;
+    padding: 8rem 3rem;
+    overflow: hidden;
+  }
+  .story.reverse {
+    grid-template-columns: 1fr 1fr;
+  }
+  .story.reverse .story-image { order: 2; }
+  .story.reverse .story-content { order: 1; }
+
+  .story-image-wrap {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+  }
+  .story-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .story-image img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 115%;
+    object-fit: cover;
+    will-change: transform;
+    filter: contrast(1.05) saturate(0.85) sepia(0.08);
+  }
+  .story-content {
+    max-width: 480px;
+  }
+  .story-tag {
+    font-size: 0.66rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  .story-tag .num { color: var(--ochre); opacity: 0.7; margin-right: 1rem; }
+  .story-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 96;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.025em;
+  }
+  .story-title em { font-style: italic; color: var(--cream-2); font-weight: 200; }
+  .story-meta {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ochre);
+  }
+  .story-meta span { color: var(--cream); opacity: 0.55; }
+  .story-body {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--cream-2);
+    font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 20;
+    margin-bottom: 2rem;
+  }
+  .story-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(235, 222, 196, 0.25);
+    transition: color 0.3s ease, border-color 0.3s ease, gap 0.3s ease;
+  }
+  .story-link:hover {
+    color: var(--clay);
+    border-color: var(--clay);
+    gap: 1.5rem;
+  }
+
+  /* Large bg display number for each story */
+  .story-bignum {
+    position: absolute;
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-variation-settings: "opsz" 144;
+    font-size: 25vw;
+    line-height: 0.85;
+    color: rgba(201, 120, 74, 0.04);
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+  }
+  .story:nth-child(odd) .story-bignum {
+    bottom: 0; right: 2rem;
+  }
+  .story:nth-child(even) .story-bignum {
+    top: 0; left: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .story {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      padding: 5rem 1.5rem;
+      min-height: auto;
+    }
+    .story.reverse .story-image { order: 0; }
+    .story.reverse .story-content { order: 1; }
+    .story-bignum { font-size: 40vw; opacity: 0.5; }
+  }
+
+  /* ── 4. CLOSING SECTION ─────────────────────────────── */
+  .closing {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 3rem;
+    text-align: center;
+    background: var(--ink);
+    position: relative;
+  }
+  .closing-inner { max-width: 700px; }
+  .closing-eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+  .closing h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.025em;
+  }
+  .closing h2 em { font-style: italic; color: var(--cream-2); font-weight: 200; }
+  .closing-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-family: 'Fraunces', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--clay);
+    color: var(--clay);
+    transition: all 0.3s ease;
+    background: transparent;
+  }
+  .btn:hover {
+    background: var(--clay);
+    color: var(--ink);
+  }
+  .btn.primary {
+    background: var(--clay);
+    color: var(--ink);
+  }
+  .btn.primary:hover {
+    background: transparent;
+    color: var(--clay);
+  }
+
+  /* Section gap marker */
+  .section-marker {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--ochre);
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Persistent grain -->
+<div class="grain"></div>
+
+<!-- Persistent nav -->
+<nav class="fixed-nav" id="fixedNav">
+  <div class="brand">Ali Khedr</div>
+  <ul class="menu">
+    <li><a href="#film">Film</a></li>
+    <li><a href="#photography">Photography</a></li>
+    <li><a href="#journalism">Journalism</a></li>
+    <li><a href="jazz-kabeez.html">Jazz Kabeez</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- ─── 1. HERO ─────────────────────────────────────────── -->
+<section class="hero">
+  <div class="bg-video">
+    <iframe id="ytPlayer"
+      src="https://www.youtube.com/embed/oUT55Mi2pZY?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&modestbranding=1&rel=0&playlist=oUT55Mi2pZY&playsinline=1&iv_load_policy=3&enablejsapi=1"
+      title="Showreel" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+  <div class="hero-sepia"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="eyebrow" data-anim="rise">Beirut · Documentarian since 2014</div>
+      <h1 class="hero-title">
+        <span data-anim="rise">A decade of</span><br>
+        <em data-anim="rise">witness.</em>
+      </h1>
+      <p class="hero-tagline" data-anim="rise">
+        Independent Syrian <strong>journalist, photographer, videographer</strong> and <strong>musician</strong> — working at the intersection of documentary, humanitarian story, and sound.
+      </p>
+    </div>
+    <div class="hero-bottom" data-anim="fade">
+      <div>Currently<br><span style="color:var(--cream); opacity:.55">Filming · Composing · Bearing Witness</span></div>
+      <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+      <div>Est. 2014<br><span style="color:var(--cream); opacity:.55">Beirut, Lebanon</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 2. INTERLUDE ─────────────────────────────────────── -->
+<section class="interlude">
+  <div class="interlude-marker">— I —</div>
+  <div class="interlude-text">
+    Photographs aren't<br>
+    <span class="reveal-word"><span>just</span></span>
+    <span class="reveal-word"><span>records.</span></span><br>
+    They're <em>a way of</em><br>
+    <em>refusing to look</em><br>
+    <em>away.</em>
+  </div>
+</section>
+
+<!-- ─── 3. STORIES ───────────────────────────────────────── -->
+<section class="story" id="story-1">
+  <div class="section-marker">001 / Photography</div>
+  <div class="story-bignum">01</div>
+
+  <div class="story-image-wrap">
+    <div class="story-image">
+      <img src="assets/images/indivisible/dsc05334-3.jpg" alt="Indivisible — 16 Days of Activism">
+    </div>
+  </div>
+
+  <div class="story-content">
+    <div class="story-tag"><span class="num">001</span> Photography · 2022</div>
+    <h2 class="story-title">Indivisible <em>—</em> 16 days of activism</h2>
+    <div class="story-meta">
+      <div>Year<br><span>2022</span></div>
+      <div>Location<br><span>Beirut</span></div>
+      <div>Format<br><span>Photo Essay</span></div>
+    </div>
+    <p class="story-body">
+      The outcomes of photographers and writers who shed light on the experiences and stories of people belonging to the most marginalized groups in our society — campaigning against gender-based violence.
+    </p>
+    <a href="#" class="story-link">View the full essay <span>→</span></a>
+  </div>
+</section>
+
+<section class="story reverse" id="story-2">
+  <div class="section-marker">002 / Photography</div>
+  <div class="story-bignum">02</div>
+
+  <div class="story-image-wrap">
+    <div class="story-image">
+      <img src="assets/images/beirut-uprising/mg-0866.jpg" alt="From the uprising in Beirut, October 2019">
+    </div>
+  </div>
+
+  <div class="story-content">
+    <div class="story-tag"><span class="num">002</span> Photography · 2019</div>
+    <h2 class="story-title"><em>October.</em><br>From the streets of Beirut.</h2>
+    <div class="story-meta">
+      <div>Year<br><span>2019</span></div>
+      <div>Location<br><span>Beirut</span></div>
+      <div>Format<br><span>On the Ground</span></div>
+    </div>
+    <p class="story-body">
+      From the uprising in Beirut, October 2019. A country pushed past its breaking point — and the photographs that refused to let the moment pass without record.
+    </p>
+    <a href="#" class="story-link">Read the dispatch <span>→</span></a>
+  </div>
+</section>
+
+<section class="story" id="story-3">
+  <div class="section-marker">003 / Journalism</div>
+  <div class="story-bignum">03</div>
+
+  <div class="story-image-wrap">
+    <div class="story-image">
+      <img src="assets/images/osf-bekaa/al-fares-distribution-2015.jpg" alt="Al-Fares refugee camp, Bekaa Valley, January 2015">
+    </div>
+  </div>
+
+  <div class="story-content">
+    <div class="story-tag"><span class="num">003</span> Journalism · 2015</div>
+    <h2 class="story-title">Al-Fares, after midnight <em>—</em></h2>
+    <div class="story-meta">
+      <div>Year<br><span>2015</span></div>
+      <div>Location<br><span>Bekaa Valley</span></div>
+      <div>For<br><span>Syrian Eyes</span></div>
+    </div>
+    <p class="story-body">
+      Lebanon, Bekaa Valley, 11 January 2015. Syrian Eyes volunteers at a late-night distribution during the winter storms. The camp is colder than the photographs can convey.
+    </p>
+    <a href="#" class="story-link">Open the archive <span>→</span></a>
+  </div>
+</section>
+
+<!-- ─── 4. CLOSING ─────────────────────────────────────── -->
+<section class="closing" id="contact">
+  <div class="closing-inner">
+    <div class="closing-eyebrow">— Get in touch</div>
+    <h2>The work continues. <em>Find me here.</em></h2>
+    <div class="closing-actions">
+      <a class="btn primary" href="mailto:alishkhedr@gmail.com">Email</a>
+      <a class="btn" href="https://instagram.com/ali_shaikh_">Instagram</a>
+      <a class="btn" href="https://www.linkedin.com/in/ali-alsheikh-khedr-a1b8a680/">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── Custom cursor ─────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+});
+function animateCursor() {
+  cursorX += (mouseX - cursorX) * 0.15;
+  cursorY += (mouseY - cursorY) * 0.15;
+  cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%,-50%)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .story-image').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// ─── Lenis smooth scroll ───────────────────────────────────
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+});
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+
+// Connect Lenis with GSAP ScrollTrigger
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+// ─── Nav scroll state ──────────────────────────────────────
+const nav = document.getElementById('fixedNav');
+ScrollTrigger.create({
+  trigger: 'body',
+  start: '100 top',
+  onUpdate: (self) => {
+    if (self.scroll() > 100) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+});
+
+// ─── Hero entrance animation ───────────────────────────────
+gsap.set('[data-anim="rise"]', { y: 60, opacity: 0 });
+gsap.set('[data-anim="fade"]', { opacity: 0 });
+const heroTl = gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.5 }});
+heroTl
+  .to('.hero .eyebrow', { y: 0, opacity: 1 }, 0.5)
+  .to('.hero-title span:nth-child(1)', { y: 0, opacity: 1 }, 0.7)
+  .to('.hero-title em', { y: 0, opacity: 1 }, 0.9)
+  .to('.hero-tagline', { y: 0, opacity: 1 }, 1.2)
+  .to('.hero-bottom', { opacity: 1, duration: 1.4 }, 1.5);
+
+// ─── Hero parallax on scroll ───────────────────────────────
+gsap.to('.bg-video', {
+  scale: 1.15,
+  yPercent: 15,
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: true
+  }
+});
+gsap.to('.hero-text', {
+  yPercent: -30,
+  opacity: 0,
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: '70% top',
+    scrub: true
+  }
+});
+
+// ─── Interlude word reveal ─────────────────────────────────
+gsap.to('.reveal-word span', {
+  y: 0,
+  duration: 1,
+  stagger: 0.15,
+  ease: 'expo.out',
+  scrollTrigger: {
+    trigger: '.interlude',
+    start: 'top 65%',
+  }
+});
+
+// ─── Story sections — staggered reveal on scroll ──────────
+gsap.utils.toArray('.story').forEach((story) => {
+  const img = story.querySelector('.story-image img');
+  const content = story.querySelectorAll('.story-tag, .story-title, .story-meta, .story-body, .story-link');
+  const bigNum = story.querySelector('.story-bignum');
+
+  // Image parallax — image moves slower than container as user scrolls
+  gsap.fromTo(img,
+    { yPercent: -15 },
+    {
+      yPercent: 0,
+      scrollTrigger: {
+        trigger: story,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true
+      }
+    }
+  );
+
+  // Image entrance — scale in
+  gsap.fromTo(story.querySelector('.story-image-wrap'),
+    { scale: 0.92, opacity: 0 },
+    {
+      scale: 1, opacity: 1, duration: 1.5, ease: 'expo.out',
+      scrollTrigger: { trigger: story, start: 'top 70%' }
+    }
+  );
+
+  // Content stagger entrance
+  gsap.fromTo(content,
+    { y: 40, opacity: 0 },
+    {
+      y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: 'expo.out',
+      scrollTrigger: { trigger: story, start: 'top 60%' }
+    }
+  );
+
+  // Big background number drifts on scroll
+  if (bigNum) {
+    gsap.fromTo(bigNum,
+      { xPercent: -10 },
+      {
+        xPercent: 10,
+        scrollTrigger: {
+          trigger: story, start: 'top bottom', end: 'bottom top', scrub: true
+        }
+      }
+    );
+  }
+});
+
+// ─── Closing entrance ─────────────────────────────────────
+gsap.from('.closing-eyebrow, .closing h2, .closing-actions', {
+  y: 40, opacity: 0, duration: 1.3, stagger: 0.15, ease: 'expo.out',
+  scrollTrigger: { trigger: '.closing', start: 'top 70%' }
+});
+</script>
+</body>
+</html>

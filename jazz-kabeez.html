@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jazz Kabeez — Ali Khedr</title>
+<link rel="icon" type="image/x-icon" href="assets/site-meta/favicon.ico">
+<meta name="description" content="Jazz Kabeez — HIJAZZ HARB. A fusion of Jazz and Sufi music. A project by Ali Khedr.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+  :root {
+    /* Pulled from Ali's poster designs */
+    --sky:        #6B8581;
+    --sky-deep:   #5A7370;
+    --sky-light:  #80968F;
+    --sky-haze:   #91A6A0;
+
+    --ochre:      #C99544;
+    --ochre-deep: #B47E2E;
+
+    --crimson:    #A23E3E;
+    --crimson-deep:#8A3232;
+
+    --lavender:   #A48BAF;
+    --lavender-deep:#8C73A0;
+
+    --cream:      #F5EBD8;
+    --cream-2:    #EADBC0;
+    --paper:      #EFE3CC;
+
+    --ink:        #1A1A1A;
+    --ink-soft:   #2A2520;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--sky);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Paper / texture overlay (warm grain, not dark grain) ── */
+  .paper-texture {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.55  0 0 0 0 0.45  0 0 0 0.25 0'/></filter><rect width='400' height='400' filter='url(%23n)'/></svg>");
+    background-size: 400px 400px;
+  }
+
+  /* Sky gradient — fixed background, sits behind everything */
+  .sky-bg {
+    position: fixed; inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 70% 20%, rgba(245, 235, 216, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 80%, rgba(201, 149, 68, 0.08) 0%, transparent 60%),
+      linear-gradient(180deg, var(--sky-light) 0%, var(--sky) 50%, var(--sky-deep) 100%);
+  }
+
+  /* ── Persistent floating cloud field (drifts independent of scroll sections) ── */
+  .cloud-field {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    will-change: transform;
+    opacity: 0.92;
+  }
+  .cloud svg {
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.04));
+  }
+
+  /* ── Floating geometric shape accents ── */
+  .shape {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .shape-circle {
+    border-radius: 50%;
+  }
+  .shape-crimson {
+    background: var(--crimson);
+  }
+  .shape-lavender {
+    background: var(--lavender);
+  }
+  .shape-ochre-tri {
+    /* Angular yellow shape like in Miles Davis poster */
+    background: var(--ochre);
+    clip-path: polygon(0% 30%, 100% 0%, 80% 100%, 20% 80%);
+  }
+
+  /* Subtle paper-grain on shapes to match poster textures */
+  .shape::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='8' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.4 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    background-size: 200px 200px;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+    border-radius: inherit;
+    clip-path: inherit;
+  }
+
+  /* ── Persistent nav ── */
+  nav.fixed-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    transition: background 0.4s ease, padding 0.3s ease;
+  }
+  nav.fixed-nav.scrolled {
+    background: rgba(107, 133, 129, 0.7);
+    backdrop-filter: blur(20px);
+    padding: 1rem 3rem;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    font-variation-settings: "SOFT" 100;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .menu {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .menu a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 400;
+    opacity: 0.78;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .menu a:hover { opacity: 1; color: var(--ochre); }
+  .menu a.active { color: var(--ochre); opacity: 1; }
+  @media (max-width: 768px) {
+    nav.fixed-nav { padding: 1rem 1.5rem; }
+    .menu { display: none; }
+  }
+
+  /* ── 1. HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    z-index: 10;
+  }
+
+  .hero-content { position: relative; z-index: 10; max-width: 1000px; }
+
+  .hero-eyebrow {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    opacity: 0.85;
+  }
+  .hero-eyebrow::before { content: '— '; color: var(--ochre); margin-right: 0.4rem; }
+  .hero-eyebrow::after { content: ' —'; color: var(--ochre); margin-left: 0.4rem; }
+
+  h1.hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-size: clamp(4rem, 12vw, 11rem);
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--ochre);
+    font-weight: 200;
+  }
+  .hero-arabic {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: var(--cream);
+    direction: rtl;
+    margin-bottom: 3rem;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  .hero-subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.5vw, 1.45rem);
+    line-height: 1.55;
+    color: var(--cream);
+    max-width: 36em;
+    margin: 0 auto;
+    opacity: 0.95;
+  }
+  .hero-subtitle strong {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ochre);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--cream);
+    font-size: 0.66rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-scroll .down {
+    width: 1px; height: 40px;
+    background: linear-gradient(180deg, var(--cream), transparent);
+    animation: scrollDot 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollDot {
+    0%, 100% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+  }
+
+  /* ── 2. STORY / HIJAZZ HARB ── */
+  .story-section {
+    position: relative;
+    padding: 8rem 3rem;
+    z-index: 10;
+  }
+  .story-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .story-marker {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 2rem;
+  }
+  .story-heading {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 96;
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.025em;
+    max-width: 18ch;
+  }
+  .story-heading em { font-style: italic; color: var(--ochre); font-weight: 200; }
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .story-body {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--cream);
+    font-weight: 300;
+  }
+  .story-body p { margin-bottom: 1.5rem; }
+  .story-body strong { color: var(--ochre); font-weight: 500; }
+  .story-body em { color: var(--cream-2); font-style: italic; }
+
+  .story-meta {
+    border-left: 1px solid rgba(245, 235, 216, 0.25);
+    padding-left: 2rem;
+  }
+  .story-meta dl {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .story-meta dt {
+    font-size: 0.66rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+  .story-meta dd {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  /* Floating Arabic quote accent */
+  .quote-arabic {
+    position: absolute;
+    font-family: 'Amiri', serif;
+    color: var(--cream);
+    opacity: 0.15;
+    direction: rtl;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1.2;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+  }
+  .quote-arabic.q1 { top: 5%; right: -3%; }
+  .quote-arabic.q2 { bottom: 5%; left: -3%; }
+
+  @media (max-width: 900px) {
+    .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .story-meta { border-left: none; border-top: 1px solid rgba(245,235,216,0.25); padding: 2rem 0 0 0; }
+  }
+
+  /* ── 3. POSTER GALLERY ── */
+  .posters-section {
+    position: relative;
+    padding: 6rem 3rem 10rem;
+    z-index: 10;
+  }
+  .posters-header {
+    max-width: 1100px;
+    margin: 0 auto 5rem;
+    text-align: center;
+  }
+  .posters-header .marker {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 1.5rem;
+  }
+  .posters-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: -0.025em;
+  }
+  .posters-header h2 em { font-style: italic; color: var(--ochre); font-weight: 200; }
+
+  .posters-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+  .poster {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+  .poster img {
+    width: 100%;
+    display: block;
+    box-shadow:
+      0 8px 30px rgba(26, 26, 26, 0.2),
+      0 2px 6px rgba(26, 26, 26, 0.1);
+    transition: box-shadow 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .poster:hover { transform: translateY(-8px) rotate(0deg) !important; }
+  .poster:hover img {
+    box-shadow:
+      0 20px 50px rgba(26, 26, 26, 0.28),
+      0 6px 14px rgba(26, 26, 26, 0.15);
+  }
+  .poster-caption {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--cream);
+    margin-top: 1rem;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  /* Asymmetric layout — feels collage-like */
+  .poster-1 { grid-column: 1 / 5;  transform: rotate(-1.5deg) translateY(2rem); }
+  .poster-2 { grid-column: 5 / 9;  transform: rotate(1deg)    translateY(-1rem); }
+  .poster-3 { grid-column: 9 / 13; transform: rotate(-0.8deg) translateY(3rem); }
+  .poster-4 { grid-column: 2 / 7;  transform: rotate(1.5deg)  translateY(1rem); margin-top: 3rem; }
+  .poster-5 { grid-column: 7 / 12; transform: rotate(-1deg)   translateY(-2rem); margin-top: 3rem; }
+
+  @media (max-width: 900px) {
+    .posters-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .poster-1, .poster-2, .poster-3, .poster-4, .poster-5 {
+      grid-column: 1 / -1;
+      transform: none;
+      margin-top: 0;
+    }
+  }
+
+  /* ── 4. VIDEOS ── */
+  .videos-section {
+    position: relative;
+    padding: 6rem 3rem 8rem;
+    z-index: 10;
+    background: linear-gradient(180deg, transparent 0%, rgba(26,26,26,0.15) 50%, transparent 100%);
+  }
+  .videos-header {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+  }
+  .videos-header .marker {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 1.5rem;
+  }
+  .videos-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 96;
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: -0.025em;
+    margin-bottom: 1.5rem;
+  }
+  .videos-header h2 em { font-style: italic; color: var(--ochre); font-weight: 200; }
+  .videos-header p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--cream);
+    max-width: 36em;
+    opacity: 0.85;
+  }
+  .videos-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  .video-card {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--ink);
+    box-shadow: 0 6px 24px rgba(26,26,26,0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .video-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(26,26,26,0.3);
+  }
+  .video-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease, opacity 0.4s ease;
+  }
+  .video-card:hover img { transform: scale(1.05); opacity: 0.9; }
+  .video-card .play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 1px solid rgba(245, 235, 216, 0.6);
+    background: rgba(26, 26, 26, 0.45);
+    backdrop-filter: blur(8px);
+    display: grid; place-items: center;
+    transition: all 0.3s ease;
+  }
+  .video-card:hover .play {
+    border-color: var(--ochre);
+    background: var(--ochre);
+  }
+  .video-card .play svg { width: 18px; height: 18px; fill: var(--cream); transition: fill 0.3s; }
+  .video-card:hover .play svg { fill: var(--ink); }
+  .video-card iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+  .video-card.playing .play { display: none; }
+  .video-card.playing img { display: none; }
+
+  /* ── 5. CLOSING / ALBUM CTA ── */
+  .album-cta {
+    position: relative;
+    padding: 8rem 3rem 10rem;
+    text-align: center;
+    z-index: 10;
+  }
+  .album-cta-inner { max-width: 700px; margin: 0 auto; }
+  .album-cta-marker {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 2rem;
+  }
+  .album-cta h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.025em;
+  }
+  .album-cta h2 em { font-style: italic; color: var(--ochre); font-weight: 200; }
+  .album-cta p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 3rem;
+    opacity: 0.85;
+  }
+  .btn {
+    display: inline-block;
+    padding: 1.1rem 2.5rem;
+    font-family: 'Fraunces', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--ochre);
+    color: var(--cream);
+    background: var(--ochre);
+    transition: all 0.3s ease;
+  }
+  .btn:hover {
+    background: transparent;
+    color: var(--ochre);
+  }
+
+  /* Hide on mobile */
+  @media (max-width: 768px) {
+    .cloud-field .desktop-only { display: none; }
+    .quote-arabic { font-size: 3rem; opacity: 0.1; }
+    .story-section, .posters-section, .videos-section, .album-cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Layer 0: Sky -->
+<div class="sky-bg"></div>
+
+<!-- Layer 2: Floating clouds (parallax with mouse + scroll) -->
+<div class="cloud-field" id="cloudField">
+  <!-- Cloud 1 -->
+  <div class="cloud" data-depth="0.04" style="top: 8%; left: 12%; width: 200px; height: 100px;">
+    <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 70 Q15 70 15 55 Q15 40 35 40 Q35 20 60 25 Q75 5 100 20 Q125 5 145 25 Q175 25 180 50 Q195 55 185 70 Z" fill="#F5EBD8"/>
+    </svg>
+  </div>
+  <!-- Cloud 2 -->
+  <div class="cloud" data-depth="0.08" style="top: 18%; right: 8%; width: 160px; height: 80px;">
+    <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 70 Q15 70 15 55 Q15 40 35 40 Q35 20 60 25 Q75 5 100 20 Q125 5 145 25 Q175 25 180 50 Q195 55 185 70 Z" fill="#F5EBD8"/>
+    </svg>
+  </div>
+  <!-- Cloud 3 -->
+  <div class="cloud desktop-only" data-depth="0.02" style="top: 35%; left: 6%; width: 120px; height: 60px;">
+    <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 70 Q15 70 15 55 Q15 40 35 40 Q35 20 60 25 Q75 5 100 20 Q125 5 145 25 Q175 25 180 50 Q195 55 185 70 Z" fill="#F5EBD8"/>
+    </svg>
+  </div>
+  <!-- Cloud 4 -->
+  <div class="cloud" data-depth="0.06" style="top: 65%; right: 14%; width: 180px; height: 90px;">
+    <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 70 Q15 70 15 55 Q15 40 35 40 Q35 20 60 25 Q75 5 100 20 Q125 5 145 25 Q175 25 180 50 Q195 55 185 70 Z" fill="#F5EBD8"/>
+    </svg>
+  </div>
+  <!-- Cloud 5 -->
+  <div class="cloud desktop-only" data-depth="0.03" style="top: 80%; left: 20%; width: 140px; height: 70px;">
+    <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 70 Q15 70 15 55 Q15 40 35 40 Q35 20 60 25 Q75 5 100 20 Q125 5 145 25 Q175 25 180 50 Q195 55 185 70 Z" fill="#F5EBD8"/>
+    </svg>
+  </div>
+
+  <!-- Geometric shapes -->
+  <div class="shape shape-circle shape-crimson" data-depth="0.12" style="top: 28%; right: 25%; width: 140px; height: 140px;"></div>
+  <div class="shape shape-ochre-tri desktop-only" data-depth="0.10" style="top: 55%; left: 8%; width: 220px; height: 180px;"></div>
+  <div class="shape shape-circle shape-lavender" data-depth="0.07" style="top: 75%; right: 6%; width: 100px; height: 100px;"></div>
+  <div class="shape shape-circle shape-crimson desktop-only" data-depth="0.05" style="top: 4%; left: 38%; width: 60px; height: 60px;"></div>
+</div>
+
+<!-- Layer 1: Paper grain -->
+<div class="paper-texture"></div>
+
+<!-- Nav -->
+<nav class="fixed-nav" id="fixedNav">
+  <a href="index.html" class="brand">Ali Khedr</a>
+  <ul class="menu">
+    <li><a href="index.html#film">Film</a></li>
+    <li><a href="index.html#photography">Photography</a></li>
+    <li><a href="index.html#journalism">Journalism</a></li>
+    <li><a href="jazz-kabeez.html" class="active">Jazz Kabeez</a></li>
+    <li><a href="index.html#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- ─── 1. HERO ──────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow" data-anim="fade">A project by Ali Khedr</div>
+    <h1 class="hero-title">
+      <span data-anim="rise">Jazz</span>
+      <em data-anim="rise">Kabeez</em>
+    </h1>
+    <div class="hero-arabic" data-anim="rise">جاز كبيز</div>
+    <p class="hero-subtitle" data-anim="fade">
+      <strong>HIJAZZ HARB</strong> — a fusion of Jazz and Sufi music that projects the burdens of war in brilliant pieces of music and solos.
+    </p>
+  </div>
+  <div class="hero-scroll" data-anim="fade">
+    <span>Scroll to enter</span>
+    <span class="down"></span>
+  </div>
+</section>
+
+<!-- ─── 2. STORY ─────────────────────────────────────── -->
+<section class="story-section">
+  <div class="story-inner">
+    <div class="quote-arabic q1">الجاز</div>
+    <div class="quote-arabic q2">موسيقى</div>
+
+    <div class="story-marker">— I — The project</div>
+    <h2 class="story-heading">Brilliant pieces, carrying a <em>message for peace.</em></h2>
+
+    <div class="story-grid">
+      <div class="story-body">
+        <p>
+          <strong>HIJAZZ HARB</strong> brought together a group of versatile musicians, all carrying a message for peace through their music. The tracks fuse the improvisational language of <em>Jazz</em> with the spiritual cadence of <em>Sufi</em> tradition — projecting the burdens of war into brilliant solos and ensemble passages.
+        </p>
+        <p>
+          The album was performed live and recorded in Beirut, Lebanon — a city that has held many of the contradictions the music speaks to.
+        </p>
+      </div>
+      <div class="story-meta">
+        <dl>
+          <div>
+            <dt>Project</dt>
+            <dd>HIJAZZ HARB</dd>
+          </div>
+          <div>
+            <dt>Genre</dt>
+            <dd>Jazz × Sufi fusion</dd>
+          </div>
+          <div>
+            <dt>Recorded</dt>
+            <dd>Beirut, Lebanon<br>8 November 2015</dd>
+          </div>
+          <div>
+            <dt>Co-founded by</dt>
+            <dd>Ali Khedr</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 3. POSTERS ───────────────────────────────────── -->
+<section class="posters-section">
+  <div class="posters-header">
+    <div class="marker">— II — Design</div>
+    <h2>Poster series<br><em>— a tribute in Arabic.</em></h2>
+  </div>
+  <div class="posters-grid">
+    <div class="poster poster-1" data-poster-rest="-1.5">
+      <img src="assets/designs/jazz-kabeez-posters/john-coltrane.jpg" alt="John Coltrane poster">
+      <div class="poster-caption">John Coltrane</div>
+    </div>
+    <div class="poster poster-2" data-poster-rest="1">
+      <img src="assets/designs/jazz-kabeez-posters/miles-davis.jpg" alt="Miles Davis poster">
+      <div class="poster-caption">Miles Davis</div>
+    </div>
+    <div class="poster poster-3" data-poster-rest="-0.8">
+      <img src="assets/designs/jazz-kabeez-posters/nina-simone.jpg" alt="Nina Simone poster">
+      <div class="poster-caption">Nina Simone</div>
+    </div>
+    <div class="poster poster-4" data-poster-rest="1.5">
+      <img src="assets/designs/jazz-kabeez-posters/ellis-marsalis.jpg" alt="Ellis Marsalis poster">
+      <div class="poster-caption">Ellis Marsalis</div>
+    </div>
+    <div class="poster poster-5" data-poster-rest="-1">
+      <img src="assets/designs/jazz-kabeez-posters/chick-corea.jpg" alt="Chick Corea poster">
+      <div class="poster-caption">Chick Corea</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 4. VIDEOS ────────────────────────────────────── -->
+<section class="videos-section">
+  <div class="videos-header">
+    <div class="marker">— III — Performances</div>
+    <h2><em>Recorded</em> live</h2>
+    <p>Seven recordings from the Jazz Kabeez sessions in Beirut. Click any card to play.</p>
+  </div>
+  <div class="videos-grid" id="videosGrid">
+    <!-- Cards populated by JS below for cleanliness -->
+  </div>
+</section>
+
+<!-- ─── 5. ALBUM CTA ─────────────────────────────────── -->
+<section class="album-cta">
+  <div class="album-cta-inner">
+    <div class="album-cta-marker">— IV — Listen</div>
+    <h2>The full album<br><em>— on YouTube.</em></h2>
+    <p>The complete HIJAZZ HARB recording, in sequence as it was performed.</p>
+    <a class="btn" href="https://www.youtube.com/watch?v=upt3_VQ91Qw&list=PLq92M5mNdSTf2pKpKRWOEZllJS1c3INS9" target="_blank" rel="noopener">
+      Listen to the album →
+    </a>
+  </div>
+</section>
+
+<script>
+// ─── Smooth scroll ─────────────────────────────────────
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+});
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+// ─── Nav scrolled state ────────────────────────────────
+const nav = document.getElementById('fixedNav');
+ScrollTrigger.create({
+  trigger: 'body',
+  start: '100 top',
+  onUpdate: (self) => {
+    if (self.scroll() > 100) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+});
+
+// ─── Mouse parallax for floating shapes & clouds ───────
+const floaters = document.querySelectorAll('[data-depth]');
+let mouseX = 0, mouseY = 0;
+let targetX = 0, targetY = 0;
+
+window.addEventListener('mousemove', (e) => {
+  targetX = (e.clientX / window.innerWidth - 0.5) * 2;  // -1 to 1
+  targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animateFloaters() {
+  // Smooth lerp toward mouse target
+  mouseX += (targetX - mouseX) * 0.05;
+  mouseY += (targetY - mouseY) * 0.05;
+
+  floaters.forEach((el) => {
+    const depth = parseFloat(el.dataset.depth) || 0.05;
+    const x = -mouseX * depth * 100;
+    const y = -mouseY * depth * 100;
+    // Preserve existing transform (for poster rotation) by checking element type
+    if (el.classList.contains('cloud') || el.classList.contains('shape')) {
+      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+  });
+  requestAnimationFrame(animateFloaters);
+}
+animateFloaters();
+
+// ─── Continuous slow cloud drift ───────────────────────
+gsap.utils.toArray('.cloud').forEach((cloud, i) => {
+  gsap.to(cloud, {
+    x: '+=30',
+    duration: 8 + i * 2,
+    yoyo: true,
+    repeat: -1,
+    ease: 'sine.inOut'
+  });
+});
+
+// ─── Scroll-driven parallax for shapes (slow drift up) ─
+gsap.utils.toArray('.shape, .quote-arabic').forEach((shape) => {
+  gsap.to(shape, {
+    yPercent: -30,
+    scrollTrigger: {
+      trigger: 'body',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 0.5
+    }
+  });
+});
+
+// ─── Hero entrance ─────────────────────────────────────
+gsap.set('[data-anim="rise"]', { y: 50, opacity: 0 });
+gsap.set('[data-anim="fade"]', { opacity: 0 });
+const heroTl = gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.3 }});
+heroTl
+  .to('.hero-eyebrow', { opacity: 0.85, duration: 1.4 }, 0.4)
+  .to('.hero-title span', { y: 0, opacity: 1 }, 0.6)
+  .to('.hero-title em',   { y: 0, opacity: 1 }, 0.8)
+  .to('.hero-arabic',     { y: 0, opacity: 0.85 }, 1.0)
+  .to('.hero-subtitle',   { opacity: 0.95, duration: 1.4 }, 1.2)
+  .to('.hero-scroll',     { opacity: 0.7, duration: 1.4 }, 1.5);
+
+// ─── Story section entrance ───────────────────────────
+gsap.from('.story-marker, .story-heading, .story-body, .story-meta', {
+  y: 40, opacity: 0, duration: 1.2, stagger: 0.15, ease: 'expo.out',
+  scrollTrigger: { trigger: '.story-section', start: 'top 65%' }
+});
+
+// ─── Poster entrance — stagger, retain rest rotation ──
+gsap.utils.toArray('.poster').forEach((poster, i) => {
+  const restRotate = parseFloat(poster.dataset.posterRest) || 0;
+  // Set rotation from data attr, override CSS for cleaner anim
+  gsap.set(poster, { rotation: restRotate });
+
+  gsap.from(poster, {
+    y: 80, opacity: 0, rotation: restRotate + (i % 2 === 0 ? -5 : 5),
+    duration: 1.3,
+    delay: i * 0.1,
+    ease: 'expo.out',
+    scrollTrigger: { trigger: '.posters-section', start: 'top 60%' }
+  });
+});
+
+// ─── Posters header ───────────────────────────────────
+gsap.from('.posters-header > *', {
+  y: 30, opacity: 0, duration: 1.2, stagger: 0.15, ease: 'expo.out',
+  scrollTrigger: { trigger: '.posters-section', start: 'top 70%' }
+});
+
+// ─── Videos section ───────────────────────────────────
+const videos = [
+  { id: 'nw3i_e5r_CU', title: 'Performance I' },
+  { id: '4yh5cZsZMTw', title: 'Performance II' },
+  { id: 'kDHkMvAN2IM', title: 'Performance III' },
+  { id: 'MBBvqeCfydY', title: 'Performance IV' },
+  { id: 'p0HamVKY0eU', title: 'Performance V' },
+  { id: 'kbSTswR6IkE', title: 'Performance VI' },
+  { id: 'bjLMMzRjxY0', title: 'Performance VII' }
+];
+const grid = document.getElementById('videosGrid');
+videos.forEach((v) => {
+  const card = document.createElement('div');
+  card.className = 'video-card';
+  card.dataset.id = v.id;
+  card.innerHTML = `
+    <img src="assets/video-thumbnails/jazz-kabeez-${videos.indexOf(v)+1}-${v.id}.jpg" alt="${v.title}" loading="lazy">
+    <div class="play">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+  `;
+  card.addEventListener('click', () => {
+    if (card.classList.contains('playing')) return;
+    card.classList.add('playing');
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1`;
+    iframe.allow = 'autoplay; encrypted-media';
+    iframe.allowFullscreen = true;
+    card.appendChild(iframe);
+  });
+  grid.appendChild(card);
+});
+
+gsap.from('.videos-header > *', {
+  y: 30, opacity: 0, duration: 1.2, stagger: 0.15, ease: 'expo.out',
+  scrollTrigger: { trigger: '.videos-section', start: 'top 70%' }
+});
+gsap.from('.video-card', {
+  y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
+  scrollTrigger: { trigger: '.videos-section', start: 'top 60%' }
+});
+
+// ─── Album CTA ────────────────────────────────────────
+gsap.from('.album-cta > * > *', {
+  y: 30, opacity: 0, duration: 1.2, stagger: 0.15, ease: 'expo.out',
+  scrollTrigger: { trigger: '.album-cta', start: 'top 70%' }
+});
+</script>
+</body>
+</html>
