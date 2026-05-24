@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Khedr — Witness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,200..900,30..100,0..1;1,9..144,200..900,30..100,0..1&family=JetBrains+Mono:wght@300;400;500&family=Amiri:ital,wght@0,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+  :root {
+    --void:        #03060B;
+    --abyss:       #060B14;
+    --ink:         #0A1220;
+    --midnight:    #111C2E;
+    --slate:       #1E2A42;
+    --steel:       #324155;
+    --fog:         #6B7B95;
+    --bone:        #B8C1D0;
+    --paper:       #D8DEE8;
+    --xenon:       #4FB3FF;
+    --amber-warn:  #D4A056;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--abyss);
+    color: var(--bone);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body { cursor: none; }
+
+  /* Cursor */
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 56px; height: 56px;
+    border: 1px solid var(--bone);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width 0.4s cubic-bezier(0.2,0.7,0.2,1),
+                height 0.4s cubic-bezier(0.2,0.7,0.2,1),
+                border-color 0.3s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring::before,
+  .cursor-ring::after {
+    content: ''; position: absolute; background: var(--bone);
+  }
+  .cursor-ring::before {
+    left: 50%; top: -6px; bottom: -6px; width: 1px; transform: translateX(-50%);
+  }
+  .cursor-ring::after {
+    top: 50%; left: -6px; right: -6px; height: 1px; transform: translateY(-50%);
+  }
+  .cursor-dot {
+    position: fixed; top: 0; left: 0;
+    width: 3px; height: 3px;
+    background: var(--xenon);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0 8px var(--xenon);
+  }
+  .cursor-ring.hover {
+    width: 120px; height: 120px;
+    border-color: var(--xenon);
+  }
+  @media (hover: none), (max-width: 768px) {
+    html, body { cursor: auto; }
+    .cursor-ring, .cursor-dot { display: none; }
+  }
+
+  /* Grain */
+  .grain {
+    position: fixed; inset: -50%;
+    z-index: 9500;
+    pointer-events: none;
+    opacity: 0.15;
+    mix-blend-mode: screen;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.6  0 0 0 0 0.75  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 240px 240px;
+    animation: grain 8s steps(10) infinite;
+  }
+  @keyframes grain {
+    0%   { transform: translate(0,0); }
+    25%  { transform: translate(-10%, 6%); }
+    50%  { transform: translate(8%, -14%); }
+    75%  { transform: translate(-4%, 18%); }
+    100% { transform: translate(0,0); }
+  }
+
+  /* Volumetric light beam */
+  .light-beam {
+    position: fixed;
+    top: -20%; left: 60%;
+    width: 35vw;
+    height: 140vh;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(120deg,
+        transparent 0%,
+        rgba(79, 179, 255, 0.06) 35%,
+        rgba(79, 179, 255, 0.12) 50%,
+        rgba(79, 179, 255, 0.06) 65%,
+        transparent 100%);
+    filter: blur(20px);
+    transform-origin: top center;
+    transform: rotate(15deg);
+    opacity: 0.7;
+    will-change: transform;
+    mix-blend-mode: screen;
+  }
+
+  /* Vignette */
+  .vignette {
+    position: fixed; inset: 0;
+    z-index: 8000;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.95) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.5) 100%);
+  }
+
+  /* Nav */
+  nav.fixed-nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.8rem 3rem;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 14;
+    font-size: 0.92rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--paper);
+    text-decoration: none;
+  }
+  .menu { display: flex; gap: 2.5rem; list-style: none; }
+  .menu a {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--bone);
+    text-decoration: none;
+    font-size: 0.66rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .menu a:hover { opacity: 1; color: var(--xenon); }
+  .menu a sup {
+    font-size: 0.5rem; margin-right: 0.4em;
+    color: var(--xenon); opacity: 0.9;
+  }
+
+  /* SCENE */
+  .scene {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1800px;
+    perspective-origin: 50% 50%;
+  }
+  .scene-bg {
+    position: absolute; inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(ellipse at 25% 25%, rgba(50, 65, 85, 0.4) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 75%, rgba(17, 28, 46, 0.6) 0%, transparent 60%),
+      radial-gradient(circle at 50% 50%, var(--ink) 0%, var(--abyss) 70%, var(--void) 100%);
+  }
+  .stage {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* Planes */
+  .plane {
+    position: absolute;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .plane-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.05s linear;
+  }
+  .plane-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.15) saturate(0.65) brightness(0.78) hue-rotate(-8deg);
+  }
+  .plane-pin {
+    position: absolute;
+    top: -4px; left: -4px;
+    width: 8px; height: 8px;
+    background: var(--amber-warn);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--amber-warn);
+    z-index: 5;
+  }
+  .plane-label {
+    position: absolute;
+    bottom: -2.5rem; left: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fog);
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .plane-label .accent { color: var(--xenon); }
+
+  .plane-A { top: 28%; left: 6%; width: 240px; height: 320px;
+    transform: translateZ(-300px) rotateY(18deg) rotateX(-4deg); }
+  .plane-B { top: 12%; left: 38%; width: 320px; height: 200px;
+    transform: translateZ(-150px) rotateY(-6deg) rotateX(3deg); }
+  .plane-C { top: 56%; left: 30%; width: 200px; height: 280px;
+    transform: translateZ(-80px) rotateY(12deg) rotateX(-2deg); }
+  .plane-D { top: 22%; right: 5%; width: 360px; height: 200px;
+    transform: translateZ(50px) rotateY(-20deg) rotateX(2deg); }
+  .plane-D iframe { width: 100%; height: 100%; border: 0;
+    filter: contrast(1.1) saturate(0.7) brightness(0.85) hue-rotate(-8deg); }
+  .plane-E { bottom: 8%; right: 22%; width: 180px; height: 240px;
+    transform: translateZ(20px) rotateY(-8deg) rotateX(5deg); }
+  .plane-F { top: 65%; left: 8%; width: 220px; height: 140px;
+    transform: translateZ(-200px) rotateY(22deg) rotateX(-6deg); }
+
+  /* Title stack */
+  .title-stack {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate3d(-50%, -50%, 100px);
+    z-index: 20;
+    text-align: center;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--bone);
+    margin-bottom: 2rem;
+    opacity: 0;
+    display: flex; justify-content: center; align-items: center; gap: 1rem;
+  }
+  .eyebrow .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--xenon);
+    box-shadow: 0 0 10px var(--xenon);
+  }
+  .eyebrow .amber-dot { background: var(--amber-warn); box-shadow: 0 0 8px var(--amber-warn); }
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 30, "WONK" 0, "opsz" 144;
+    font-size: clamp(4rem, 11vw, 11rem);
+    line-height: 0.9;
+    color: var(--paper);
+    letter-spacing: -0.04em;
+    margin-bottom: 1rem;
+  }
+  h1.title .line { display: block; overflow: hidden; }
+  h1.title .word {
+    display: inline-block;
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  h1.title em {
+    font-style: italic;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    color: var(--xenon);
+    font-weight: 200;
+    text-shadow: 0 0 30px rgba(79, 179, 255, 0.35);
+  }
+  .arabic {
+    font-family: 'Amiri', serif;
+    direction: rtl;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    color: var(--fog);
+    margin-top: 0.5rem;
+    opacity: 0;
+  }
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+    color: var(--bone);
+    margin-top: 2rem;
+    max-width: 30em;
+    line-height: 1.6;
+    opacity: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tagline strong { font-weight: 500; font-style: normal; color: var(--paper); }
+
+  /* HUD */
+  .hud {
+    position: absolute;
+    z-index: 100;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .hud .label { color: var(--fog); opacity: 0.6; }
+  .hud .val   { color: var(--paper); margin-top: 0.3rem; }
+  .hud .val .accent { color: var(--xenon); }
+  .hud .val .amber  { color: var(--amber-warn); }
+  .hud-tl { top: 5.5rem; left: 3rem; }
+  .hud-tr { top: 5.5rem; right: 3rem; text-align: right; }
+  .hud-bl { bottom: 2.5rem; left: 3rem; }
+  .hud-br { bottom: 2.5rem; right: 3rem; text-align: right; }
+  .viewfinder-bracket {
+    position: absolute;
+    width: 28px; height: 28px;
+    border: 1px solid var(--fog);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .vb-tl { top: 4.5rem; left: 2rem; border-right: 0; border-bottom: 0; }
+  .vb-tr { top: 4.5rem; right: 2rem; border-left: 0; border-bottom: 0; }
+  .vb-bl { bottom: 1.5rem; left: 2rem; border-right: 0; border-top: 0; }
+  .vb-br { bottom: 1.5rem; right: 2rem; border-left: 0; border-top: 0; }
+
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--bone);
+    opacity: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+  }
+  .scroll-cue .track {
+    width: 1px; height: 50px;
+    background: rgba(184, 193, 208, 0.15);
+    position: relative; overflow: hidden;
+  }
+  .scroll-cue .track::after {
+    content: '';
+    position: absolute;
+    top: -25px; left: 0;
+    width: 1px; height: 25px;
+    background: var(--xenon);
+    box-shadow: 0 0 6px var(--xenon);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%   { top: -25px; }
+    100% { top: 100%; }
+  }
+
+  /* SCENE 2 */
+  .scene-2 {
+    position: relative;
+    min-height: 110vh;
+    padding: 10rem 3rem;
+    background: linear-gradient(180deg, var(--abyss) 0%, var(--void) 50%, var(--abyss) 100%);
+    perspective: 1800px;
+  }
+  .scene-2-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .s2-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--xenon);
+    margin-bottom: 1.5rem;
+  }
+  .s2-tag .num { color: var(--fog); margin-right: 1rem; }
+  .s2-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "SOFT" 30, "opsz" 96;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 0.98;
+    color: var(--paper);
+    letter-spacing: -0.025em;
+    margin-bottom: 2rem;
+  }
+  .s2-title em {
+    font-style: italic;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 96;
+    color: var(--xenon);
+    font-weight: 200;
+  }
+  .s2-body {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--bone);
+    max-width: 28em;
+    margin-bottom: 2rem;
+  }
+  .s2-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    border-top: 1px solid var(--steel);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+  }
+  .s2-meta dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fog);
+    margin-bottom: 0.4rem;
+  }
+  .s2-meta dd {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--paper);
+  }
+  .s2-photos {
+    position: relative;
+    aspect-ratio: 4/5;
+    transform-style: preserve-3d;
+    perspective: 1500px;
+  }
+  .s2-plane {
+    position: absolute;
+    transform-style: preserve-3d;
+    will-change: transform;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+  .s2-plane img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: contrast(1.15) saturate(0.7) brightness(0.85) hue-rotate(-8deg);
+  }
+  .s2-plane-1 { top: 0; left: 0; width: 60%; height: 70%; z-index: 3; }
+  .s2-plane-2 { top: 25%; right: 0; width: 55%; height: 55%; z-index: 2; }
+  .s2-plane-3 { bottom: 0; left: 18%; width: 50%; height: 45%; z-index: 4; }
+
+  @media (max-width: 900px) {
+    nav.fixed-nav { padding: 1.2rem 1.5rem; }
+    .menu { display: none; }
+    .hud { font-size: 0.5rem; }
+    .hud-tl, .hud-bl { left: 1.5rem; }
+    .hud-tr, .hud-br { right: 1.5rem; }
+    .vb-tl, .vb-bl { left: 1rem; }
+    .vb-tr, .vb-br { right: 1rem; }
+    .plane-A { width: 130px; height: 180px; top: 18%; left: 4%; }
+    .plane-B { width: 180px; height: 110px; top: 8%; left: 28%; }
+    .plane-C { width: 110px; height: 160px; top: 60%; left: 18%; }
+    .plane-D { width: 200px; height: 110px; top: 14%; right: 4%; }
+    .plane-E { width: 100px; height: 140px; bottom: 6%; right: 12%; }
+    .plane-F { width: 130px; height: 80px; top: 70%; left: 4%; }
+    .scene-2 { padding: 5rem 1.5rem; }
+    .scene-2-inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .stage, .plane, .title-stack, .light-beam { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<div class="grain"></div>
+<div class="light-beam" id="lightBeam"></div>
+<div class="vignette"></div>
+
+<nav class="fixed-nav">
+  <a href="#" class="brand">Ali · Khedr</a>
+  <ul class="menu">
+    <li><a href="#"><sup>01</sup>Witness</a></li>
+    <li><a href="#"><sup>02</sup>Films</a></li>
+    <li><a href="#"><sup>03</sup>Reel</a></li>
+    <li><a href="#"><sup>04</sup>Jazz Kabeez</a></li>
+    <li><a href="#"><sup>05</sup>Contact</a></li>
+  </ul>
+</nav>
+
+<section class="scene" id="sceneHero">
+  <div class="scene-bg"></div>
+
+  <div class="viewfinder-bracket vb-tl"></div>
+  <div class="viewfinder-bracket vb-tr"></div>
+  <div class="viewfinder-bracket vb-bl"></div>
+  <div class="viewfinder-bracket vb-br"></div>
+
+  <div class="stage" id="stage">
+
+    <div class="plane plane-A" data-depth="-300">
+      <span class="plane-pin"></span>
+      <div class="plane-inner">
+        <img class="plane-img" src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-0866_orig.jpg" alt="">
+      </div>
+      <div class="plane-label"><span class="accent">A</span> · Beirut · Oct 2019</div>
+    </div>
+
+    <div class="plane plane-B" data-depth="-150">
+      <span class="plane-pin"></span>
+      <div class="plane-inner">
+        <img class="plane-img" src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dsc05334-3_orig.jpg" alt="">
+      </div>
+      <div class="plane-label"><span class="accent">B</span> · Indivisible · 2022</div>
+    </div>
+
+    <div class="plane plane-C" data-depth="-80">
+      <span class="plane-pin"></span>
+      <div class="plane-inner">
+        <img class="plane-img" src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/published/vlc22r-9qim-8a-1.jpg" alt="">
+      </div>
+      <div class="plane-label"><span class="accent">C</span> · Al-Fares · Bekaa</div>
+    </div>
+
+    <div class="plane plane-D" data-depth="50">
+      <span class="plane-pin"></span>
+      <div class="plane-inner">
+        <iframe
+          src="https://www.youtube.com/embed/oUT55Mi2pZY?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&modestbranding=1&rel=0&playlist=oUT55Mi2pZY&playsinline=1&iv_load_policy=3"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen></iframe>
+      </div>
+      <div class="plane-label"><span class="accent">D</span> · Reel · Live</div>
+    </div>
+
+    <div class="plane plane-E" data-depth="20">
+      <span class="plane-pin"></span>
+      <div class="plane-inner">
+        <img class="plane-img" src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-7498_orig.jpg" alt="">
+      </div>
+      <div class="plane-label"><span class="accent">E</span> · Discovery Journey</div>
+    </div>
+
+    <div class="plane plane-F" data-depth="-200">
+      <span class="plane-pin"></span>
+      <div class="plane-inner">
+        <img class="plane-img" src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/img-2609_orig.jpg" alt="">
+      </div>
+      <div class="plane-label"><span class="accent">F</span> · Uprising</div>
+    </div>
+
+    <div class="title-stack" id="titleStack">
+      <div class="eyebrow">
+        <span>Beirut</span>
+        <span class="dot"></span>
+        <span>Documentarian · 2014—</span>
+        <span class="dot amber-dot"></span>
+        <span>Live</span>
+      </div>
+      <h1 class="title">
+        <span class="line"><span class="word">a decade</span></span>
+        <span class="line"><span class="word">of <em>witness</em></span></span>
+      </h1>
+      <div class="arabic">علي الشيخ خضر</div>
+      <p class="tagline">
+        Independent Syrian <strong>journalist, photographer, videographer</strong> &amp; <strong>musician</strong>. Documentary, humanitarian story, and sound — held in the same hand.
+      </p>
+    </div>
+  </div>
+
+  <div class="hud hud-tl">
+    <div class="label">Coordinates</div>
+    <div class="val">33.8938 N · 35.5018 E</div>
+  </div>
+  <div class="hud hud-tr">
+    <div class="label">Frame</div>
+    <div class="val">01 / 07 · <span class="accent">Witness</span></div>
+  </div>
+  <div class="hud hud-bl">
+    <div class="label">Now playing</div>
+    <div class="val">REEL · A.K. <span class="accent">●</span> live</div>
+  </div>
+  <div class="hud hud-br">
+    <div class="label">Index</div>
+    <div class="val">A — F · 06 frames</div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Drift</span>
+    <div class="track"></div>
+  </div>
+</section>
+
+<section class="scene-2">
+  <div class="scene-2-inner">
+    <div class="s2-text">
+      <div class="s2-tag"><span class="num">— 02 / Films</span> Bekaa to Beirut</div>
+      <h2 class="s2-title">A decade<br>at the <em>seam.</em></h2>
+      <p class="s2-body">
+        Syrian refugee life in Lebanon, the October uprising, and the slow work of artists and educators rebuilding meaning. Each project a different room — entered alone, left altered.
+      </p>
+      <dl class="s2-meta">
+        <div><dt>Body of work</dt><dd>06 projects</dd></div>
+        <div><dt>Span</dt><dd>2014 — 2026</dd></div>
+        <div><dt>Media</dt><dd>Photo · Film · Sound</dd></div>
+        <div><dt>Published in</dt><dd>Amnesty · Al Jazeera</dd></div>
+      </dl>
+    </div>
+
+    <div class="s2-photos" id="s2Photos">
+      <div class="s2-plane s2-plane-1" data-d="40">
+        <img src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/dsc04831-2.jpg" alt="">
+      </div>
+      <div class="s2-plane s2-plane-2" data-d="-60">
+        <img src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/mg-0645_orig.jpg" alt="">
+      </div>
+      <div class="s2-plane s2-plane-3" data-d="80">
+        <img src="https://ali-khedr.weebly.com/uploads/1/0/1/0/101089180/img-0090_orig.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const lenis = new Lenis({
+  duration: 1.4,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+});
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+const cursorRing = document.getElementById('cursorRing');
+const cursorDot  = document.getElementById('cursorDot');
+let mx = 0, my = 0, cx = 0, cy = 0;
+window.addEventListener('mousemove', (e) => {
+  mx = e.clientX; my = e.clientY;
+  cursorDot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%,-50%)`;
+});
+function tickCursor() {
+  cx += (mx - cx) * 0.20;
+  cy += (my - cy) * 0.20;
+  cursorRing.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%,-50%)`;
+  requestAnimationFrame(tickCursor);
+}
+tickCursor();
+document.querySelectorAll('a, .plane, .s2-plane').forEach((el) => {
+  el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+});
+
+const stage = document.getElementById('stage');
+const planes = document.querySelectorAll('.plane');
+const titleStack = document.getElementById('titleStack');
+const lightBeam = document.getElementById('lightBeam');
+
+let mouseHX = 0.5, mouseHY = 0.5;
+let lerpX = 0, lerpY = 0;
+
+const heroSec = document.getElementById('sceneHero');
+heroSec.addEventListener('mousemove', (e) => {
+  const r = heroSec.getBoundingClientRect();
+  mouseHX = (e.clientX - r.left) / r.width;
+  mouseHY = (e.clientY - r.top) / r.height;
+});
+
+function tickParallax() {
+  if (!reduced) {
+    lerpX += ((mouseHX - 0.5) - lerpX) * 0.06;
+    lerpY += ((mouseHY - 0.5) - lerpY) * 0.06;
+
+    const rotY = lerpX * 10;
+    const rotX = -lerpY * 8;
+    stage.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+
+    planes.forEach((plane) => {
+      const d = parseFloat(plane.dataset.depth) || 0;
+      const tx = -lerpX * (d * 0.4);
+      const ty = -lerpY * (d * 0.4);
+      const inner = plane.querySelector('.plane-inner');
+      if (inner) inner.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+    });
+
+    titleStack.style.transform = `translate3d(-50%, -50%, 100px) rotateY(${rotY * 0.5}deg) rotateX(${rotX * 0.5}deg)`;
+    lightBeam.style.transform = `translate3d(${-lerpX * 30}px, 0, 0) rotate(${15 + lerpX * 3}deg)`;
+  }
+  requestAnimationFrame(tickParallax);
+}
+tickParallax();
+
+// Gyro mobile
+function setupGyro() {
+  if (typeof DeviceOrientationEvent === 'undefined') return;
+  window.addEventListener('deviceorientation', (e) => {
+    if (reduced || e.gamma === null) return;
+    mouseHX = Math.max(0, Math.min(1, (e.gamma + 45) / 90));
+    mouseHY = Math.max(0, Math.min(1, (e.beta + 45) / 90));
+  });
+}
+if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+  document.body.addEventListener('touchstart', () => {
+    DeviceOrientationEvent.requestPermission()
+      .then(s => { if (s === 'granted') setupGyro(); })
+      .catch(() => {});
+  }, { once: true });
+} else {
+  setupGyro();
+}
+
+// Entrance
+gsap.set('.title .word', { y: '110%', opacity: 0 });
+const tl = gsap.timeline({ defaults: { ease: 'expo.out' }});
+tl
+  .from('.plane', { opacity: 0, scale: 0.9, duration: 1.8, stagger: 0.15 }, 0.3)
+  .to('.plane-label', { opacity: 1, duration: 1.2, stagger: 0.05 }, 1.4)
+  .to('.eyebrow', { opacity: 1, duration: 1.6 }, 1.2)
+  .to('.title .word', { y: 0, opacity: 1, duration: 1.6, stagger: 0.15 }, 1.5)
+  .to('.arabic', { opacity: 0.7, duration: 1.4 }, 2.1)
+  .to('.tagline', { opacity: 1, duration: 1.4 }, 2.4)
+  .to('.hud', { opacity: 1, duration: 1.4 }, 2.5)
+  .to('.viewfinder-bracket', { opacity: 0.3, duration: 1.2 }, 2.6)
+  .to('.scroll-cue', { opacity: 0.7, duration: 1.4 }, 2.7);
+
+// Scroll-driven plane spread
+gsap.utils.toArray('.plane').forEach((plane, i) => {
+  const dir = (i % 2 === 0) ? 1 : -1;
+  gsap.to(plane, {
+    z: -200 - (i * 40),
+    x: `+=${dir * 60}`,
+    opacity: 0.2,
+    scrollTrigger: {
+      trigger: '.scene', start: 'top top', end: 'bottom top', scrub: 0.8
+    }
+  });
+});
+gsap.to('.title-stack', {
+  yPercent: -80,
+  opacity: 0,
+  scrollTrigger: { trigger: '.scene', start: 'top top', end: 'bottom top', scrub: 0.8 }
+});
+gsap.to('.hud, .scroll-cue, .viewfinder-bracket', {
+  opacity: 0,
+  scrollTrigger: { trigger: '.scene', start: '10% top', end: '50% top', scrub: 0.5 }
+});
+
+// Scene 2 entrance
+gsap.from('.s2-tag, .s2-title, .s2-body, .s2-meta', {
+  y: 40, opacity: 0, duration: 1.2, stagger: 0.12, ease: 'expo.out',
+  scrollTrigger: { trigger: '.scene-2', start: 'top 65%' }
+});
+gsap.from('.s2-plane', {
+  y: 80, opacity: 0, duration: 1.4, stagger: 0.12, ease: 'expo.out',
+  scrollTrigger: { trigger: '.scene-2', start: 'top 60%' }
+});
+
+const s2Photos = document.getElementById('s2Photos');
+let s2X = 0, s2Y = 0, s2LX = 0, s2LY = 0;
+s2Photos.addEventListener('mousemove', (e) => {
+  const r = s2Photos.getBoundingClientRect();
+  s2X = ((e.clientX - r.left) / r.width - 0.5) * 12;
+  s2Y = ((e.clientY - r.top) / r.height - 0.5) * -12;
+});
+s2Photos.addEventListener('mouseleave', () => { s2X = 0; s2Y = 0; });
+function tickS2() {
+  s2LX += (s2X - s2LX) * 0.08;
+  s2LY += (s2Y - s2LY) * 0.08;
+  const bases = [
+    'rotateY(8deg) rotateX(-3deg) translateZ(0)',
+    'rotateY(-12deg) rotateX(2deg) translateZ(-60px)',
+    'rotateY(4deg) rotateX(6deg) translateZ(40px)'
+  ];
+  document.querySelectorAll('.s2-plane').forEach((p, i) => {
+    const d = parseFloat(p.dataset.d) || 0;
+    p.style.transform = `${bases[i]} translate3d(${s2LX * (d/40)}px, ${s2LY * (d/40)}px, 0)`;
+  });
+  requestAnimationFrame(tickS2);
+}
+tickS2();
+</script>
+</body>
+</html>
